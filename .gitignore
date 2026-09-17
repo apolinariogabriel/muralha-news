@@ -1,0 +1,15 @@
+# Arquivo com senhas — NUNCA suba para o GitHub
+.env
+
+# Arquivos do Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+env/
+venv/
+.venv/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
