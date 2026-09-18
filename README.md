@@ -99,8 +99,10 @@ Pronto! Em alguns segundos você receberá o e-mail.
 - Clique em **"I understand my workflows, go ahead and enable them"**
 
 #### 6. Pronto! 🎉
-- Toda **segunda-feira às 8h** (horário de Brasília) o GitHub vai rodar o monitor automaticamente e te mandar o e-mail
-- Você pode também rodar **a qualquer hora** manualmente: vá em Actions → "Monitor de Notícias Semanal" → "Run workflow"
+- Toda **terça-feira às 23h** (horário de Brasília) o GitHub roda o monitor automaticamente e te manda o e-mail — bem a tempo das reuniões de quarta/quinta
+- Você pode também rodar **a qualquer hora** manualmente: vá em Actions → "Monitor de Notícias (terça 23h)" → "Run workflow"
+
+> ⏰ **Sobre o horário:** o GitHub agenda em UTC. Terça 23h no Brasil (UTC-3) equivale a `0 2 * * 3` no cron (2h de quarta em UTC). Para mudar, edite a linha `cron` em `.github/workflows/monitor_semanal.yml`.
 
 ---
 

@@ -1,9 +1,11 @@
-name: 📰 Monitor de Notícias Semanal
+name: 📰 Monitor de Notícias (terça 23h)
 
 on:
-  # Roda toda segunda-feira às 8h (horário de Brasília = 11h UTC)
+  # Roda toda TERÇA-FEIRA às 23h (horário de Brasília).
+  # Como o GitHub usa UTC, 23h em Brasília (UTC-3) = 02h de QUARTA em UTC.
+  # Assim você recebe o compilado antes das reuniões de quarta/quinta.
   schedule:
-    - cron: '0 11 * * 1'
+    - cron: '0 2 * * 3'
 
   # Permite rodar manualmente pelo GitHub a qualquer hora
   workflow_dispatch:
