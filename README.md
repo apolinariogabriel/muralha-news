@@ -126,21 +126,35 @@ Jornal da USP · Marília Notícia
 ## 🔑 Termos monitorados
 
 **Termos principais:**
-- polícia preditiva
-- policiamento preditivo
+- polícia preditiva / policiamento preditivo
 - muralha paulista
-- smart sampa
+- smart sampa / smartsampa / smart-sampa *(pega todas as grafias)*
 
 **Termos relacionados (ampliam a cobertura):**
 - vigilância preditiva
-- reconhecimento facial sp
-- reconhecimento facial são paulo
-- câmeras inteligentes sp
+- reconhecimento facial
+- câmeras inteligentes
 - monitoramento preditivo
-- sssp preditiva
-- tecnologia policial sp
+- tecnologia policial
+- videomonitoramento
 
 > Para adicionar ou remover termos, edite a lista `PALAVRAS_CHAVE` no arquivo `monitor.py`
+
+---
+
+## ⚙️ Como o monitor funciona (importante!)
+
+**Onde ele busca as palavras:**
+1. Primeiro no **título** e no **resumo** da notícia (rápido)
+2. Se não achar, **abre a matéria e lê o texto completo** (pega muito mais!)
+
+> Isso é controlado pela opção `LER_TEXTO_COMPLETO = True` no topo do `monitor.py`. Deixe `True` para busca completa, ou `False` para busca rápida (só título/resumo).
+
+**Período de busca:**
+- Por padrão, busca notícias dos **últimos 7 dias** (`DIAS_PARA_TRAS = 7`)
+- Para pegar tudo o que estiver no feed (sem filtro de data), coloque `DIAS_PARA_TRAS = 0`
+
+**Sem repetição:** o monitor evita mostrar a mesma notícia duas vezes na mesma varredura.
 
 ---
 
