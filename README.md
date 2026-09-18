@@ -152,7 +152,6 @@ A lista fica em `EXCLUIR` no `monitor.py` e já inclui: estádio, torcedor, Moru
 **Período de busca:** controlado por `DIAS_PARA_TRAS` no topo do `monitor.py`.
 - `7` = última semana (ideal para o envio semanal) · `15` = 15 dias · `30` = último mês
 - Aumente esse número para pegar notícias mais antigas (ex: uma que saiu há 10 dias)
-- ⚠️ **Neste momento está em `17`** (uma rodada de recuperação para o novo e-mail). Depois de conferir, volte para `7`.
 
 **Cobertura por veículo:** o e-mail traz uma seção recolhível "📊 Cobertura" mostrando quantas notícias vieram de cada veículo — útil para conferir se os jornais que você acompanha estão aparecendo.
 

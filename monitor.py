@@ -65,11 +65,9 @@ EXCLUIR = [
 # ─────────────────────────────────────────────
 # QUANTOS DIAS PARA TRÁS buscar
 # Ex: 7 = últimos 7 dias · 15 = últimos 15 dias · 30 = último mês
-#
-# ⚠️ TEMPORÁRIO: mantido em 17 dias para mais UMA rodada de recuperação
-# (agora enviando para o novo e-mail). Depois dessa rodada, VOLTAR PARA 7.
+# Como o envio é semanal, 7 é o ideal: pega tudo da semana sem repetir.
 # ─────────────────────────────────────────────
-DIAS_PARA_TRAS = 17
+DIAS_PARA_TRAS = 7
 
 # Idioma/região da busca (Brasil, português)
 GNEWS_PARAMS = "hl=pt-BR&gl=BR&ceid=BR:pt-419"
