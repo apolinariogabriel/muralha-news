@@ -65,8 +65,12 @@ EXCLUIR = [
 # ─────────────────────────────────────────────
 # QUANTOS DIAS PARA TRÁS buscar
 # Ex: 7 = últimos 7 dias · 15 = últimos 15 dias · 30 = último mês
+#
+# ⚠️ TEMPORÁRIO: em 17/09/2026, ajustado para 17 dias para fazer uma
+# varredura de recuperação (pegar a notícia do SmartSampa do dia 12).
+# DEPOIS DESSE CHECK, VOLTAR PARA 7 (é o ideal para envio semanal).
 # ─────────────────────────────────────────────
-DIAS_PARA_TRAS = 7
+DIAS_PARA_TRAS = 17
 
 # Idioma/região da busca (Brasil, português)
 GNEWS_PARAMS = "hl=pt-BR&gl=BR&ceid=BR:pt-419"
@@ -204,7 +208,24 @@ def montar_email_html(noticias: list[dict]) -> str:
               <a href="{n['link']}" style="font-size:13px; color:#1a73e8;">🔗 Ler notícia completa</a>
             </div>
             """
-        corpo = f"<p>Foram encontradas <strong>{len(noticias)} notícia(s)</strong> {periodo}:</p>" + itens
+        # Resumo de quantas notícias por veículo (ajuda a conferir a cobertura)
+        contagem = {}
+        for n in noticias:
+            contagem[n["veiculo"]] = contagem.get(n["veiculo"], 0) + 1
+        linhas_veiculos = "".join(
+            f"<li>{v}: <strong>{qtd}</strong></li>"
+            for v, qtd in sorted(contagem.items(), key=lambda x: x[1], reverse=True)
+        )
+        resumo_veiculos = f"""
+        <details style="margin-bottom:16px;">
+          <summary style="cursor:pointer; color:#555; font-size:14px;">
+            📊 Cobertura: {len(contagem)} veículo(s) diferente(s) (clique para ver)
+          </summary>
+          <ul style="font-size:13px; color:#555; columns:2;">{linhas_veiculos}</ul>
+        </details>
+        """
+
+        corpo = f"<p>Foram encontradas <strong>{len(noticias)} notícia(s)</strong> {periodo}:</p>" + resumo_veiculos + itens
 
     html = f"""
     <!DOCTYPE html>
