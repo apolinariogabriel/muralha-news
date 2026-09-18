@@ -66,9 +66,8 @@ EXCLUIR = [
 # QUANTOS DIAS PARA TRÁS buscar
 # Ex: 7 = últimos 7 dias · 15 = últimos 15 dias · 30 = último mês
 #
-# ⚠️ TEMPORÁRIO: em 17/09/2026, ajustado para 17 dias para fazer uma
-# varredura de recuperação (pegar a notícia do SmartSampa do dia 12).
-# DEPOIS DESSE CHECK, VOLTAR PARA 7 (é o ideal para envio semanal).
+# ⚠️ TEMPORÁRIO: mantido em 17 dias para mais UMA rodada de recuperação
+# (agora enviando para o novo e-mail). Depois dessa rodada, VOLTAR PARA 7.
 # ─────────────────────────────────────────────
 DIAS_PARA_TRAS = 17
 
