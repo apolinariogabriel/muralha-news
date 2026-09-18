@@ -6,11 +6,15 @@ Aplicação que busca automaticamente notícias sobre **polícia preditiva**, **
 
 ## 📋 O que ele faz?
 
-- Varre os feeds RSS de **14 veículos brasileiros** (G1, Folha, Estadão, Agência Pública, The Intercept, Brasil de Fato, Metrópoles, Carta Capital e outros)
-- Filtra notícias que contenham os termos monitorados
-- Monta um e-mail bonito e formatado com título, veículo, data e link de cada notícia
+- Busca notícias usando o **RSS do Google Notícias** — que cobre **TODOS os veículos brasileiros** de uma vez (Folha, Estadão, G1, UOL, CNN, Metrópoles, etc.)
+- É a mesma tecnologia por trás do **Google Alertas**: estável, rápido e sem paywall no feed
+- Filtra por palavras-chave e pelos **últimos 7 dias** direto na origem
+- Remove notícias repetidas
+- Monta um e-mail formatado com título, veículo, data e link de cada notícia
 - Envia para o seu e-mail automaticamente
 - Pode rodar **toda semana de forma automática** via GitHub (de graça!)
+
+> **Por que Google Notícias em vez de feeds RSS individuais?** Muitos veículos (Folha, Estadão, R7...) mudam a URL do feed, escondem atrás de paywall ou removem o RSS. O Google Notícias resolve tudo isso: uma busca só já traz notícias de todos os jornais.
 
 ---
 
@@ -100,61 +104,39 @@ Pronto! Em alguns segundos você receberá o e-mail.
 
 ---
 
-## 📰 Veículos monitorados (30 fontes)
+## 📰 Veículos monitorados
 
-**Grandes veículos nacionais:**
-G1 / Globo · G1 São Paulo · O Globo · O Globo Brasil · UOL Notícias · Folha de S.Paulo · Folha Cotidiano · Estadão · Valor Econômico · R7 · CNN Brasil · BBC News Brasil · Veja · Metrópoles · Correio Braziliense · Agência Brasil
+**Todos os veículos brasileiros indexados pelo Google Notícias.**
 
-**Análise e política:**
-Poder360 · Nexo Jornal · Carta Capital · Piauí
-
-**Investigativo / direitos humanos / segurança:**
-Agência Pública · The Intercept Brasil · Brasil de Fato · Ponte Jornalismo · Marco Zero
-
-**Jurídico / regulação / tecnologia:**
-JOTA · Migalhas · TecMundo · Tilt (UOL)
-
-**Universitário / regional:**
-Jornal da USP · Marília Notícia
-
-> ⚠️ **Importante:** feeds RSS às vezes mudam de endereço. Ao rodar, o script mostra no final quais fontes não responderam. Se alguma aparecer sempre com problema, o link do feed dela pode ter mudado — me avise que atualizo.
-
-> 💡 **Não há limite prático** de fontes. Para adicionar mais, é só incluir uma linha na lista `FEEDS` no arquivo `monitor.py` no formato `"Nome do veículo": "url-do-rss"`.
+Como o monitor usa a busca do Google Notícias, ele automaticamente cobre Folha, Estadão, G1, UOL, O Globo, CNN Brasil, Metrópoles, Agência Pública, Ponte Jornalismo, Nexo, JOTA e centenas de outros — sem precisar cadastrar o feed de cada um. Se o Google indexa, o monitor encontra.
 
 ---
 
 ## 🔑 Termos monitorados
 
-**Termos principais:**
-- polícia preditiva / policiamento preditivo
-- muralha paulista
-- smart sampa / smartsampa / smart-sampa *(pega todas as grafias)*
+Cada termo é uma busca no Google Notícias (aspas = expressão exata):
 
-**Termos relacionados (ampliam a cobertura):**
-- vigilância preditiva
-- reconhecimento facial
-- câmeras inteligentes
-- monitoramento preditivo
-- tecnologia policial
-- videomonitoramento
+- `"muralha paulista"`
+- `"smart sampa"` e `"smartsampa"`
+- `"polícia preditiva"`
+- `"policiamento preditivo"`
+- `"vigilância preditiva"`
+- `"monitoramento preditivo"`
+- `"reconhecimento facial"` combinado com São Paulo / polícia / segurança
+- `"câmeras inteligentes"` combinado com São Paulo / polícia / segurança
 
-> Para adicionar ou remover termos, edite a lista `PALAVRAS_CHAVE` no arquivo `monitor.py`
+> Para adicionar ou remover termos, edite a lista `TERMOS_BUSCA` no arquivo `monitor.py`. Dica: use aspas para expressões exatas e parênteses com `OR` para combinar contextos, ex: `'"reconhecimento facial" (São Paulo OR polícia)'`.
 
 ---
 
-## ⚙️ Como o monitor funciona (importante!)
+## ⚙️ Como o monitor funciona
 
-**Onde ele busca as palavras:**
-1. Primeiro no **título** e no **resumo** da notícia (rápido)
-2. Se não achar, **abre a matéria e lê o texto completo** (pega muito mais!)
+- Para **cada termo**, monta uma busca no RSS do Google Notícias já filtrada pelos **últimos 7 dias** (operador `when:7d`)
+- Junta os resultados de todos os termos e **remove repetições** (por link e por título)
+- Ordena da notícia **mais recente para a mais antiga**
+- Cada item mostra o **veículo**, a **data** e **qual termo** fez a notícia aparecer
 
-> Isso é controlado pela opção `LER_TEXTO_COMPLETO = True` no topo do `monitor.py`. Deixe `True` para busca completa, ou `False` para busca rápida (só título/resumo).
-
-**Período de busca:**
-- Por padrão, busca notícias dos **últimos 7 dias** (`DIAS_PARA_TRAS = 7`)
-- Para pegar tudo o que estiver no feed (sem filtro de data), coloque `DIAS_PARA_TRAS = 0`
-
-**Sem repetição:** o monitor evita mostrar a mesma notícia duas vezes na mesma varredura.
+**Período de busca:** controlado por `DIAS_PARA_TRAS` no topo do `monitor.py` (padrão: `7`).
 
 ---
 
