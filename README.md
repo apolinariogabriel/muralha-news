@@ -129,14 +129,29 @@ Cada termo é uma busca no Google Notícias (aspas = expressão exata):
 
 ---
 
+## 🚫 Filtro anti-ruído
+
+Como "reconhecimento facial" e "câmeras" aparecem em contextos que **não** têm a ver com vigilância urbana (futebol, shows, aeroportos), o monitor descarta automaticamente notícias que citem esses assuntos.
+
+A lista fica em `EXCLUIR` no `monitor.py` e já inclui: estádio, torcedor, MorumBIS, Morumbi, Allianz, Maracanã, ingresso, show, festival, aeroporto, embarque, Copa, Libertadores, Brasileirão, jogo.
+
+> Recebeu uma notícia fora do tema? Adicione uma palavra dela na lista `EXCLUIR` que ela para de aparecer.
+
+> ⚠️ Nenhum filtro por palavra-chave é 100%. Termos fortes como "muralha paulista" e "smart sampa" quase nunca dão ruído; os amplos ("reconhecimento facial") podem trazer algo fora do tema mesmo com o filtro.
+
+---
+
 ## ⚙️ Como o monitor funciona
 
 - Para **cada termo**, monta uma busca no RSS do Google Notícias já filtrada pelos **últimos 7 dias** (operador `when:7d`)
+- Descarta o ruído (lista `EXCLUIR`)
 - Junta os resultados de todos os termos e **remove repetições** (por link e por título)
 - Ordena da notícia **mais recente para a mais antiga**
 - Cada item mostra o **veículo**, a **data** e **qual termo** fez a notícia aparecer
 
-**Período de busca:** controlado por `DIAS_PARA_TRAS` no topo do `monitor.py` (padrão: `7`).
+**Período de busca:** controlado por `DIAS_PARA_TRAS` no topo do `monitor.py`.
+- `7` = última semana (padrão) · `15` = 15 dias · `30` = último mês
+- Aumente esse número para pegar notícias mais antigas (ex: uma que saiu há 10 dias)
 
 ---
 

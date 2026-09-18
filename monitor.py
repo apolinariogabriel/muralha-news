@@ -37,6 +37,7 @@ EMAIL_DESTINO   = os.environ.get("EMAIL_DESTINO",   "limacase9@gmail.com")
 # ─────────────────────────────────────────────
 
 TERMOS_BUSCA = [
+    # Termos fortes: quase nunca dão ruído
     '"muralha paulista"',
     '"smart sampa"',
     '"smartsampa"',
@@ -44,13 +45,26 @@ TERMOS_BUSCA = [
     '"policiamento preditivo"',
     '"vigilância preditiva"',
     '"monitoramento preditivo"',
-    '"reconhecimento facial" (São Paulo OR polícia OR segurança)',
-    '"câmeras inteligentes" (São Paulo OR polícia OR segurança)',
+    # Termos amplos: restringidos ao contexto de SP/polícia/segurança
+    '"reconhecimento facial" (São Paulo OR polícia OR segurança pública OR prefeitura)',
+    '"câmeras inteligentes" (São Paulo OR polícia OR segurança pública OR prefeitura)',
+]
+
+# ─────────────────────────────────────────────
+# PALAVRAS PARA EXCLUIR (reduz ruído)
+# Notícias que contiverem esses contextos são descartadas da busca.
+# Ex: futebol/estádio, shows, etc. — onde "reconhecimento facial" aparece
+# mas não tem relação com vigilância urbana / polícia preditiva.
+# ─────────────────────────────────────────────
+EXCLUIR = [
+    "estádio", "estadio", "torcedor", "torcida", "MorumBIS", "Morumbi",
+    "Allianz", "Maracanã", "ingresso", "show", "festival", "aeroporto",
+    "embarque", "Copa", "Libertadores", "Brasileirão", "jogo",
 ]
 
 # ─────────────────────────────────────────────
 # QUANTOS DIAS PARA TRÁS buscar
-# Ex: 7 = só notícias dos últimos 7 dias.
+# Ex: 7 = últimos 7 dias · 15 = últimos 15 dias · 30 = último mês
 # ─────────────────────────────────────────────
 DIAS_PARA_TRAS = 7
 
@@ -127,6 +141,12 @@ def buscar_noticias() -> tuple[list[dict], list[str]]:
                 veiculo = extrair_veiculo(entry)
                 titulo  = limpar_titulo(entry.get("title", ""), veiculo)
                 resumo  = entry.get("summary", "")
+
+                # Filtro de exclusão: descarta ruído (futebol, shows, aeroporto...)
+                texto_para_checar = f"{titulo} {resumo}".lower()
+                if any(palavra.lower() in texto_para_checar for palavra in EXCLUIR):
+                    print(f"  🚫 Ignorada (ruído): {titulo[:55]}")
+                    continue
 
                 # Evita duplicatas (mesmo link OU mesmo título)
                 chave_titulo = titulo.lower().strip()
